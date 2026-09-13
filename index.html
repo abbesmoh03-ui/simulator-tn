@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>سيميلاتور تونس</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#0f1117;--bg2:#181c27;--bg3:#1e2335;--card:#242940;
+  --border:#2e3556;--accent:#e85d04;--accent2:#f48c06;
+  --teal:#00b4d8;--green:#06d6a0;--red:#ef233c;--orange:#f4a261;
+  --text:#e2e8f0;--muted:#8892b0;--white:#fff;--gold:#ffd60a;--r:12px
+}
+body{font-family:'Segoe UI',Arial,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;direction:rtl}
+.hdr{background:linear-gradient(135deg,#1a0a00,#2d0f00,#1a0a00);border-bottom:2px solid var(--accent);padding:16px 28px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;box-shadow:0 4px 30px rgba(232,93,4,.3)}
+.hdr-title{display:flex;align-items:center;gap:14px}
+.hdr-icon{width:46px;height:46px;background:var(--accent);border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:22px}
+.hdr h1{font-size:1.3rem;font-weight:700;color:var(--white);line-height:1.2}
+.hdr h1 span{color:var(--accent2)}
+.hdr-sub{font-size:.78rem;color:var(--muted);margin-top:2px}
+.hdr-date{background:rgba(255,255,255,.06);border:1px solid var(--border);border-radius:10px;padding:7px 14px;font-size:.82rem;color:var(--muted);text-align:center}
+.hdr-date strong{color:var(--gold);display:block;font-size:.95rem}
+.tabs{background:var(--bg2);border-bottom:1px solid var(--border);padding:0 28px;display:flex;gap:4px}
+.tbtn{padding:13px 26px;background:transparent;border:none;border-bottom:3px solid transparent;color:var(--muted);font-size:.93rem;font-weight:600;cursor:pointer;transition:all .2s;font-family:inherit}
+.tbtn.on{color:var(--accent);border-bottom-color:var(--accent);background:rgba(232,93,4,.08)}
+.tbtn:hover:not(.on){color:var(--text);background:rgba(255,255,255,.04)}
+.main{padding:22px 28px;max-width:1400px;margin:0 auto}
+.sec{display:none}.sec.on{display:block}
+.card{background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:18px}
+.ctitle{font-size:.82rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--muted);margin-bottom:14px;display:flex;align-items:center;gap:8px;padding-bottom:10px;border-bottom:1px solid var(--border)}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.mt{margin-top:14px}
+.fld{display:flex;flex-direction:column;gap:5px}
+.fld label{font-size:.78rem;color:var(--muted);font-weight:600;display:flex;align-items:center;gap:6px}
+.badge{background:rgba(232,93,4,.15);color:var(--accent);font-size:.68rem;padding:1px 6px;border-radius:4px;font-weight:700}
+.fld input{background:var(--bg3);border:1.5px solid var(--border);border-radius:8px;padding:9px 13px;color:var(--white);font-size:.93rem;font-family:inherit;transition:border-color .2s,box-shadow .2s;direction:ltr;text-align:right;width:100%}
+.fld input:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba(232,93,4,.15)}
+.unit{font-size:.73rem;color:var(--muted)}
+.rate-box{background:linear-gradient(135deg,rgba(232,93,4,.1),rgba(244,140,6,.05));border:1px solid rgba(232,93,4,.3);border-radius:10px;padding:12px 16px;display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
+.rl{font-size:.78rem;color:var(--muted)}
+.rv{font-size:1.5rem;font-weight:800;color:var(--accent)}
+.rs{font-size:.72rem;color:var(--muted);margin-top:2px}
+.rg{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:14px}
+.rc{background:var(--bg3);border-radius:10px;padding:13px 15px;border:1px solid var(--border)}
+.rc.hl{border-color:var(--green);background:rgba(6,214,160,.05)}
+.rc.nf{border-color:var(--teal);background:rgba(0,180,216,.05)}
+.rlb{font-size:.73rem;color:var(--muted);font-weight:600;margin-bottom:4px}
+.rv2{font-size:1.25rem;font-weight:800;color:var(--white)}
+.rv2.g{color:var(--green)}.rv2.r{color:var(--red)}.rv2.o{color:var(--orange)}.rv2.t{color:var(--teal)}.rv2.gd{color:var(--gold)}
+.rsb{font-size:.7rem;color:var(--muted);margin-top:2px}
+.sumrow{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:22px}
+.sc{background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:18px;display:flex;align-items:center;gap:12px}
+.si{width:46px;height:46px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:1.3rem;flex-shrink:0}
+.si.d{background:rgba(0,180,216,.15)}.si.w{background:rgba(232,93,4,.15)}.si.m{background:rgba(6,214,160,.15)}
+.sp{font-size:.73rem;color:var(--muted);font-weight:600}
+.sa{font-size:1.35rem;font-weight:800;color:var(--white)}
+.sa.p{color:var(--green)}.sa.n{color:var(--red)}
+.scur{font-size:.72rem;color:var(--muted)}
+.svct{width:100%;border-collapse:collapse}
+.svct th{background:var(--bg3);padding:9px 13px;font-size:.76rem;color:var(--muted);font-weight:700;text-align:right;border-bottom:1px solid var(--border)}
+.svct td{padding:7px 13px;border-bottom:1px solid rgba(46,53,86,.5);font-size:.86rem;vertical-align:middle}
+.svct td input{background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:5px 9px;color:var(--white);font-size:.86rem;width:100%}
+.svct td input:focus{outline:none;border-color:var(--accent)}
+.svct .tr td{background:rgba(232,93,4,.1);font-weight:700;color:var(--accent);border-top:2px solid var(--accent)}
+.addbtn,.rmbtn{background:none;border:1px dashed var(--border);border-radius:6px;padding:5px 11px;color:var(--muted);font-size:.78rem;cursor:pointer;font-family:inherit;transition:all .2s}
+.addbtn:hover{border-color:var(--accent);color:var(--accent)}
+.rmbtn{border-color:rgba(239,35,60,.3);color:var(--red);padding:3px 7px;font-size:.73rem}
+.rmbtn:hover{background:rgba(239,35,60,.1)}
+.bkd{background:var(--bg3);border-radius:10px;padding:15px;border:1px solid var(--border);margin-top:14px}
+.bkdt{font-size:.78rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:11px;padding-bottom:8px;border-bottom:1px solid var(--border)}
+.br{display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px solid rgba(46,53,86,.4);font-size:.86rem}
+.br:last-child{border-bottom:none}
+.bl{color:var(--muted)}.bv{font-weight:700;color:var(--white)}
+.br.tot{border-top:2px solid var(--accent);margin-top:5px;padding-top:9px}
+.br.tot .bl{color:var(--white);font-weight:700;font-size:.93rem}
+.br.tot .bv{color:var(--accent);font-size:1.05rem}
+.br.pft .bv{font-size:1.15rem}
+.br.pft .bl{font-weight:700;font-size:.93rem}
+.ship-tgl{display:flex;gap:7px;margin-bottom:11px;background:var(--bg3);border-radius:8px;padding:3px;width:fit-content}
+.sbtn{padding:6px 15px;border:none;border-radius:6px;font-size:.83rem;font-weight:600;cursor:pointer;background:transparent;color:var(--muted);transition:all .2s;font-family:inherit}
+.sbtn.on{background:var(--accent);color:var(--white)}
+.roi-wrap{background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:18px;overflow-x:auto}
+.roi-leg{display:flex;gap:14px;font-size:.78rem;align-items:center;flex-wrap:wrap}
+.dot{width:9px;height:9px;border-radius:50%;display:inline-block;margin-left:4px}
+table.rtbl{border-collapse:collapse;min-width:700px;width:100%}
+table.rtbl th{background:var(--bg3);padding:9px 13px;font-size:.78rem;font-weight:700;border:1px solid var(--border);text-align:center;white-space:nowrap}
+table.rtbl th.hl2{background:var(--bg);color:var(--muted);font-size:.73rem}
+table.rtbl th.tc{color:var(--teal)}
+table.rtbl td{padding:8px 11px;border:1px solid rgba(46,53,86,.5);text-align:center;font-size:.86rem;font-weight:700}
+table.rtbl td.bc{background:var(--bg3);color:var(--accent2);font-weight:800;font-size:.88rem}
+.cp{background:rgba(6,214,160,.15);color:#06d6a0}
+.ck{background:rgba(100,220,140,.1);color:#7de88b}
+.cw{background:rgba(244,162,97,.15);color:#f4a261}
+.cl{background:rgba(239,35,60,.15);color:#ef233c}
+.dvd{height:1px;background:var(--border);margin:18px 0}
+.ntb{background:rgba(0,180,216,.07);border:1px solid rgba(0,180,216,.25);border-radius:8px;padding:9px 13px;font-size:.78rem;color:var(--teal);margin-top:11px;display:flex;align-items:center;gap:7px}
+.twocol{display:grid;grid-template-columns:370px 1fr;gap:18px;align-items:start}
+.shdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;flex-wrap:wrap;gap:10px}
+.shdr h2{font-size:1.05rem;font-weight:700;color:var(--white);display:flex;align-items:center;gap:9px}
+.shdr p{font-size:.8rem;color:var(--muted);margin-top:3px}
+@media(max-width:1000px){.twocol{grid-template-columns:1fr}}
+@media(max-width:700px){.rg,.sumrow,.g2{grid-template-columns:1fr}.main{padding:12px}.tabs{padding:0 8px}}
+::-webkit-scrollbar{width:5px;height:5px}
+::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px}
+::-webkit-scrollbar-thumb:hover{background:var(--accent)}
+</style>
+</head>
+<body>
+
+<div class="hdr">
+  <div class="hdr-title">
+    <div class="hdr-icon">&#127481;&#127475;</div>
+    <div>
+      <h1>&#1587;&#1610;&#1605;&#1610;&#1604;&#1575;&#1578;&#1608;&#1585; <span>&#1578;&#1608;&#1606;&#1587;</span></h1>
+      <div class="hdr-sub">&#1606;&#1592;&#1575;&#1605; &#1578;&#1587;&#1593;&#1610;&#1585; &#1575;&#1604;&#1605;&#1606;&#1578;&#1580;&#1575;&#1578; &#8212; Tunisia Pricing Simulator</div>
+    </div>
+  </div>
+  <div class="hdr-date"><strong id="dt">&#8212;</strong>&#1575;&#1604;&#1578;&#1575;&#1585;&#1610;&#1582; &#1575;&#1604;&#1610;&#1608;&#1605;</div>
+</div>
+
+<div class="tabs">
+  <button class="tbtn on" onclick="sw('calc',this)">&#128230; &#1581;&#1575;&#1587;&#1576;&#1577; &#1575;&#1604;&#1605;&#1606;&#1578;&#1580;</button>
+  <button class="tbtn" onclick="sw('roi',this)">&#128202; &#1580;&#1583;&#1608;&#1604; &#1575;&#1604;&#1578;&#1608;&#1602;&#1593;&#1575;&#1578;</button>
+</div>
+
+<div class="main">
+
+<!-- CALC -->
+<div class="sec on" id="sec-calc">
+  <div class="sumrow">
+    <div class="sc"><div class="si d">&#128197;</div><div><div class="sp">&#1589;&#1575;&#1601;&#1610; &#1575;&#1604;&#1585;&#1576;&#1581; &#1575;&#1604;&#1610;&#1608;&#1605;&#1610;</div><div class="sa" id="sd">0 TND</div><div class="scur">&#1583;&#1610;&#1606;&#1575;&#1585; &#1578;&#1608;&#1606;&#1587;&#1610;</div></div></div>
+    <div class="sc"><div class="si w">&#128198;</div><div><div class="sp">&#1589;&#1575;&#1601;&#1610; &#1575;&#1604;&#1585;&#1576;&#1581; &#1575;&#1604;&#1571;&#1587;&#1576;&#1608;&#1593;&#1610;</div><div class="sa" id="sw">0 TND</div><div class="scur">&#1583;&#1610;&#1606;&#1575;&#1585; &#1578;&#1608;&#1606;&#1587;&#1610;</div></div></div>
+    <div class="sc"><div class="si m">&#128467;</div><div><div class="sp">&#1589;&#1575;&#1601;&#1610; &#1575;&#1604;&#1585;&#1576;&#1581; &#1575;&#1604;&#1588;&#1607;&#1585;&#1610;</div><div class="sa" id="sm">0 TND</div><div class="scur">&#1583;&#1610;&#1606;&#1575;&#1585; &#1578;&#1608;&#1606;&#1587;&#1610;</div></div></div>
+  </div>
+
+  <div class="twocol">
+    <!-- LEFT -->
+    <div>
+      <div class="card">
+        <div class="ctitle">&#9881;&#65039; &#1575;&#1604;&#1573;&#1593;&#1583;&#1575;&#1583;&#1575;&#1578; &#1575;&#1604;&#1610;&#1608;&#1605;&#1610;&#1577;</div>
+        <div class="rate-box">
+          <div><div class="rl">&#1587;&#1593;&#1585; &#1589;&#1585;&#1601; &#1575;&#1604;&#1593;&#1605;&#1604;&#1577; &#1575;&#1604;&#1610;&#1608;&#1605;</div><div class="rv"><span id="rp">3.25</span> <span style="font-size:.95rem;color:var(--muted)">TND / $1</span></div><div class="rs">&#1610;&#1578;&#1594;&#1610;&#1585; &#1610;&#1608;&#1605;&#1610;&#1575; &#8212; &#1575;&#1583;&#1582;&#1604;&#1607; &#1603;&#1604; &#1610;&#1608;&#1605;</div></div>
+          <span style="font-size:2.2rem">&#128434;</span>
+        </div>
+        <div class="g2" style="margin-bottom:12px">
+          <div class="fld"><label>&#128434; &#1587;&#1593;&#1585; &#1575;&#1604;&#1589;&#1585;&#1601; <span class="badge">&#1610;&#1608;&#1605;&#1610;</span></label><input type="number" id="ex" value="3.25" step="0.01" min="0.01" oninput="c()"><span class="unit">TND / $</span></div>
+          <div class="fld"><label>&#128203; &#1593;&#1583;&#1583; &#1575;&#1604;&#1591;&#1604;&#1576;&#1610;&#1575;&#1578; &#1575;&#1604;&#1610;&#1608;&#1605;&#1610;&#1577;</label><input type="number" id="do" value="10" step="1" min="1" oninput="c()"><span class="unit">&#1591;&#1604;&#1576;&#1610;&#1577; / &#1610;&#1608;&#1605;</span></div>
+        </div>
+        <div class="g2">
+          <div class="fld"><label>&#10003; &#1606;&#1587;&#1576;&#1577; &#1575;&#1604;&#1578;&#1571;&#1603;&#1610;&#1583; %</label><input type="number" id="cr" value="70" step="1" min="1" max="100" oninput="c()"><span class="unit">% &#1578;&#1578;&#1571;&#1603;&#1583;</span></div>
+          <div class="fld"><label>&#128666; &#1606;&#1587;&#1576;&#1577; &#1575;&#1604;&#1578;&#1608;&#1589;&#1610;&#1604; %</label><input type="number" id="dr" value="65" step="1" min="1" max="100" oninput="c()"><span class="unit">% &#1578;&#1578;&#1608;&#1589;&#1604;</span></div>
+        </div>
+        <div class="ntb">&#8505;&#65039; Delivered Cost = Cost Initial &#247; (&#1606;&#1587;&#1576;&#1577; &#1575;&#1604;&#1578;&#1608;&#1589;&#1610;&#1604; ÷ 100)</div>
+      </div>
+
+      <div class="card mt">
+        <div class="ctitle">&#128184; &#1578;&#1603;&#1575;&#1604;&#1610;&#1601; &#1575;&#1604;&#1582;&#1583;&#1605;&#1575;&#1578; (&#1588;&#1607;&#1585;&#1610;&#1575;)</div>
+        <table class="svct">
+          <thead><tr><th>&#1575;&#1604;&#1582;&#1583;&#1605;&#1577;</th><th style="width:130px">&#1575;&#1604;&#1587;&#1593;&#1585; &#1575;&#1604;&#1588;&#1607;&#1585;&#1610; (TND)</th><th style="width:140px">/ &#1591;&#1604;&#1576;&#1610;&#1577; (TND)</th><th style="width:44px"></th></tr></thead>
+          <tbody id="sb"></tbody>
+          <tfoot><tr class="tr"><td>&#1575;&#1604;&#1605;&#1580;&#1605;&#1608;&#1593;</td><td id="stm">0</td><td id="stp">0</td><td></td></tr></tfoot>
+        </table>
+        <button class="addbtn mt" onclick="addS()" style="width:100%;margin-top:9px">+ &#1573;&#1590;&#1575;&#1601;&#1577; &#1582;&#1583;&#1605;&#1577;</button>
+      </div>
+    </div>
+
+    <!-- RIGHT -->
+    <div>
+      <div class="card">
+        <div class="ctitle">&#128230; &#1578;&#1601;&#1575;&#1589;&#1610;&#1604; &#1575;&#1604;&#1605;&#1606;&#1578;&#1580;</div>
+        <div class="g2">
+          <div class="fld"><label>&#128181; &#1587;&#1593;&#1585; &#1575;&#1604;&#1588;&#1585;&#1575;&#1569;</label><input type="number" id="bu" value="5" step="0.01" min="0" oninput="c()"><span class="unit">&#1576;&#1575;&#1604;&#1583;&#1608;&#1604;&#1575;&#1585; ($)</span></div>
+          <div class="fld"><label>&#127991;&#65039; &#1587;&#1593;&#1585; &#1575;&#1604;&#1576;&#1610;&#1593;</label><input type="number" id="st" value="49.9" step="0.1" min="0" oninput="c()"><span class="unit">&#1576;&#1575;&#1604;&#1583;&#1610;&#1606;&#1575;&#1585; &#1575;&#1604;&#1578;&#1608;&#1606;&#1587;&#1610; (TND)</span></div>
+        </div>
+        <div class="dvd"></div>
+        <div class="ctitle" style="border:none;padding-bottom:0;margin-bottom:10px">&#128674; &#1578;&#1603;&#1575;&#1604;&#1610;&#1601; &#1575;&#1604;&#1588;&#1581;&#1606; — &#1575;&#1604;&#1603;&#1604; &#1610;&#1578;&#1580;&#1605;&#1593; &#1578;&#1604;&#1602;&#1575;&#1574;&#1610;&#1575;</div>
+        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:10px">
+          <div class="fld">
+            <label style="color:#90e0ef">&#127464;&#127475; &#1588;&#1581;&#1606; &#1575;&#1604;&#1589;&#1610;&#1606;</label>
+            <input type="number" id="scn" value="2" step="0.1" min="0" oninput="c()" style="border-color:rgba(144,224,239,.35)">
+            <span class="unit">&#1576;&#1575;&#1604;&#1583;&#1608;&#1604;&#1575;&#1585; ($)</span>
+          </div>
+          <div class="fld">
+            <label style="color:#90e0ef">&#128230; &#1578;&#1603;&#1575;&#1604;&#1610;&#1601; &#1573;&#1590;&#1575;&#1601;&#1610;&#1577; &#1589;&#1610;&#1606;</label>
+            <input type="number" id="ecn" value="0" step="0.1" min="0" oninput="c()" style="border-color:rgba(144,224,239,.35)">
+            <span class="unit">&#1576;&#1575;&#1604;&#1583;&#1608;&#1604;&#1575;&#1585; ($)</span>
+          </div>
+          <div class="fld">
+            <label style="color:#ffd166">&#127465;&#127487; &#1588;&#1581;&#1606; &#1575;&#1604;&#1580;&#1586;&#1575;&#1574;&#1585;</label>
+            <input type="number" id="sal" value="0" step="1" min="0" oninput="c()" style="border-color:rgba(255,209,102,.35)">
+            <span class="unit">&#1576;&#1575;&#1604;&#1583;&#1610;&#1606;&#1575;&#1585; &#1575;&#1604;&#1578;&#1608;&#1606;&#1587;&#1610; (TND)</span>
+          </div>
+          <div class="fld">
+            <label style="color:#ffd166">&#128230; &#1578;&#1603;&#1575;&#1604;&#1610;&#1601; &#1573;&#1590;&#1575;&#1601;&#1610;&#1577; &#1580;&#1586;&#1575;&#1574;&#1585;</label>
+            <input type="number" id="eal" value="0" step="1" min="0" oninput="c()" style="border-color:rgba(255,209,102,.35)">
+            <span class="unit">&#1576;&#1575;&#1604;&#1583;&#1610;&#1606;&#1575;&#1585; &#1575;&#1604;&#1578;&#1608;&#1606;&#1587;&#1610; (TND)</span>
+          </div>
+        </div>
+        <div style="background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:8px;padding:8px 14px;display:flex;justify-content:space-between;align-items:center;font-size:.82rem;margin-bottom:2px">
+          <span style="color:var(--muted)">&#129516; &#1573;&#1580;&#1605;&#1575;&#1604;&#1610; &#1578;&#1603;&#1575;&#1604;&#1610;&#1601; &#1575;&#1604;&#1588;&#1581;&#1606; (TND)</span>
+          <span id="ship-total" style="font-weight:800;color:var(--accent2);font-size:.95rem">&#8212;</span>
+        </div>
+        <div class="dvd"></div>
+        <div class="ctitle" style="border:none;padding-bottom:0;margin-bottom:10px">&#128667; &#1578;&#1603;&#1575;&#1604;&#1610;&#1601; &#1575;&#1604;&#1578;&#1608;&#1589;&#1610;&#1604; &#1608;&#1575;&#1604;&#1593;&#1605;&#1604;&#1610;&#1575;&#1578;</div>
+        <div class="g2">
+          <div class="fld"><label>&#128667; &#1587;&#1593;&#1585; &#1575;&#1604;&#1578;&#1608;&#1589;&#1610;&#1604;</label><input type="number" id="df" value="8" step="0.5" min="0" oninput="c()"><span class="unit">TND</span></div>
+          <div class="fld"><label>&#128230; &#1578;&#1603;&#1575;&#1604;&#1610;&#1601; &#1575;&#1604;&#1578;&#1594;&#1604;&#1610;&#1601;</label><input type="number" id="pk" value="1" step="0.5" min="0" oninput="c()"><span class="unit">TND</span></div>
+          <div class="fld"><label>&#128260; &#1578;&#1603;&#1604;&#1601;&#1577; &#1575;&#1604;&#1585;&#1575;&#1580;&#1593;</label><input type="number" id="rc2" value="0" step="0.5" min="0" oninput="c()"><span class="unit">TND</span></div>
+          <div class="fld"><label>&#128227; CPA &#1578;&#1603;&#1604;&#1601;&#1577; &#1575;&#1604;&#1573;&#1593;&#1604;&#1575;&#1606;</label><input type="number" id="cp2" value="3" step="0.1" min="0" oninput="c()"><span class="unit">$ / &#1591;&#1604;&#1576;&#1610;&#1577; &#1605;&#1608;&#1589;&#1617;&#1604;&#1577;</span></div>
+          <div class="fld" style="grid-column:span 2;background:rgba(255,214,10,.05);border:1px solid rgba(255,214,10,.2);border-radius:8px;padding:10px 12px;">
+            <label style="color:var(--gold)">&#128179; Payment Fee — &#1585;&#1587;&#1608;&#1605; &#1575;&#1604;&#1583;&#1601;&#1593; (% &#1605;&#1606; &#1587;&#1593;&#1585; &#1575;&#1604;&#1576;&#1610;&#1593;)</label>
+            <input type="number" id="pf" value="3" step="0.1" min="0" max="100" oninput="c()">
+            <span class="unit">% &#1605;&#1606; &#1587;&#1593;&#1585; &#1575;&#1604;&#1576;&#1610;&#1593; — &#1610;&#1581;&#1587;&#1576; &#1578;&#1604;&#1602;&#1575;&#1574;&#1610;&#1575; &#1576;&#1575;&#1604;&#1583;&#1610;&#1606;&#1575;&#1585; &#1575;&#1604;&#1578;&#1608;&#1606;&#1587;&#1610; = <strong id="pf-val" style="color:var(--gold)">—</strong></span>
+          </div>
+        </div>
+      </div>
+
+      <div class="bkd">
+        <div class="bkdt">&#128202; &#1578;&#1601;&#1589;&#1610;&#1604; &#1575;&#1604;&#1578;&#1603;&#1575;&#1604;&#1610;&#1601; &#1608;&#1575;&#1604;&#1571;&#1585;&#1576;&#1575;&#1581;</div>
+        <div class="br"><span class="bl">&#1587;&#1593;&#1585; &#1575;&#1604;&#1588;&#1585;&#1575;&#1569; (TND)</span><span class="bv" id="k1">&#8212;</span></div>
+        <div class="br"><span class="bl">&#1578;&#1603;&#1604;&#1601;&#1577; &#1575;&#1604;&#1588;&#1581;&#1606; (TND)</span><span class="bv" id="k2">&#8212;</span></div>
+        <div class="br"><span class="bl">Cost Initial</span><span class="bv" id="k3">&#8212;</span></div>
+        <div class="br"><span class="bl">Delivered Cost Final (&#247; &#1606;&#1587;&#1576;&#1577; &#1578;&#1608;&#1589;&#1610;&#1604;)</span><span class="bv" id="k4">&#8212;</span></div>
+        <div class="br"><span class="bl">&#1578;&#1608;&#1589;&#1610;&#1604; + &#1578;&#1594;&#1604;&#1610;&#1601;</span><span class="bv" id="k5">&#8212;</span></div>
+        <div class="br"><span class="bl">&#1573;&#1593;&#1604;&#1575;&#1606; CPA (TND)</span><span class="bv" id="k6">&#8212;</span></div>
+        <div class="br"><span class="bl">&#1582;&#1583;&#1605;&#1575;&#1578; / &#1591;&#1604;&#1576;&#1610;&#1577;</span><span class="bv" id="k7">&#8212;</span></div>
+        <div class="br"><span class="bl">&#1578;&#1603;&#1604;&#1601;&#1577; &#1575;&#1604;&#1585;&#1575;&#1580;&#1593;</span><span class="bv" id="k8">&#8212;</span></div>
+        <div class="br"><span class="bl">&#128179; Payment Fee (% &#1576;&#1610;&#1593;)</span><span class="bv" id="kpf" style="color:var(--gold)">&#8212;</span></div>
+        <div class="br tot"><span class="bl">&#128176; &#1573;&#1580;&#1605;&#1575;&#1604;&#1610; &#1575;&#1604;&#1578;&#1603;&#1575;&#1604;&#1610;&#1601; / &#1591;&#1604;&#1576;&#1610;&#1577;</span><span class="bv" id="k9">&#8212;</span></div>
+        <div class="br pft"><span class="bl">&#10003; &#1589;&#1575;&#1601;&#1610; &#1575;&#1604;&#1585;&#1576;&#1581; / &#1602;&#1591;&#1593;&#1577;</span><span class="bv" id="k10">&#8212;</span></div>
+      </div>
+
+      <div class="rg">
+        <div class="rc hl"><div class="rlb">&#1589;&#1575;&#1601;&#1610; &#1575;&#1604;&#1585;&#1576;&#1581; / &#1602;&#1591;&#1593;&#1577;</div><div class="rv2 g" id="r1">0.00</div><div class="rsb">&#1583;&#1610;&#1606;&#1575;&#1585; &#1578;&#1608;&#1606;&#1587;&#1610; (TND)</div></div>
+        <div class="rc nf"><div class="rlb">&#1589;&#1575;&#1601;&#1610; &#1575;&#1604;&#1585;&#1576;&#1581; / &#1602;&#1591;&#1593;&#1577;</div><div class="rv2 t" id="r2">0.00</div><div class="rsb">&#1583;&#1608;&#1604;&#1575;&#1585; ($)</div></div>
+        <div class="rc"><div class="rlb">&#1575;&#1604;&#1601;&#1575;&#1574;&#1583;&#1577; &#1575;&#1604;&#1573;&#1580;&#1605;&#1575;&#1604;&#1610;&#1577;</div><div class="rv2 gd" id="r3">0.00</div><div class="rsb">TND &#1602;&#1576;&#1604; &#1573;&#1593;&#1604;&#1575;&#1606;</div></div>
+        <div class="rc"><div class="rlb">&#1585;&#1576;&#1581; X &#1591;&#1604;&#1576;&#1610;&#1577; &#1610;&#1608;&#1605;&#1610;&#1577;</div><div class="rv2" id="r4">0.00</div><div class="rsb">TND — <span id="r4c">0</span> &#1591;&#1604;&#1576;&#1610;&#1577; &#1605;&#1608;&#1589;&#1617;&#1604;&#1577;</div></div>
+        <div class="rc"><div class="rlb">Delivered Cost (Final)</div><div class="rv2 o" id="r5">0.00</div><div class="rsb">TND &#8212; &#1575;&#1604;&#1603;&#1608;&#1587;&#1578; &#1575;&#1604;&#1601;&#1593;&#1604;&#1610;</div></div>
+        <div class="rc"><div class="rlb">&#1606;&#1587;&#1576;&#1577; &#1575;&#1604;&#1607;&#1575;&#1605;&#1588; %</div><div class="rv2" id="r6">0%</div><div class="rsb">&#1605;&#1606; &#1587;&#1593;&#1585; &#1575;&#1604;&#1576;&#1610;&#1593;</div></div>
+      </div>
+    </div>
+  </div>
+</div><!-- /sec-calc -->
+
+<!-- ROI -->
+<div class="sec" id="sec-roi">
+  <div class="shdr">
+    <div><h2>&#128202; &#1580;&#1583;&#1608;&#1604; &#1578;&#1608;&#1602;&#1593;&#1575;&#1578; &#1575;&#1604;&#1571;&#1585;&#1576;&#1575;&#1581; &#8212; ROI Module</h2><p>&#1589;&#1575;&#1601;&#1610; &#1575;&#1604;&#1585;&#1576;&#1581; &#1575;&#1604;&#1610;&#1608;&#1605;&#1610; &#1581;&#1587;&#1576; &#1575;&#1604;&#1605;&#1610;&#1586;&#1575;&#1606;&#1610;&#1577; &#215; CPA &#8212; &#1576;&#1575;&#1604;&#1583;&#1610;&#1606;&#1575;&#1585; &#1575;&#1604;&#1578;&#1608;&#1606;&#1587;&#1610; (TND)</p></div>
+    <div class="roi-leg">
+      <span><span class="dot" style="background:#06d6a0"></span>&#1585;&#1576;&#1581; &#1605;&#1605;&#1578;&#1575;&#1586;</span>
+      <span><span class="dot" style="background:#7de88b"></span>&#1585;&#1576;&#1581; &#1580;&#1610;&#1583;</span>
+      <span><span class="dot" style="background:#f4a261"></span>&#1590;&#1593;&#1610;&#1601;</span>
+      <span><span class="dot" style="background:#ef233c"></span>&#1582;&#1587;&#1575;&#1585;&#1577;</span>
+    </div>
+  </div>
+
+  <!-- ROI MANUAL INPUTS -->
+  <div class="card" style="margin-bottom:18px;border-color:rgba(0,180,216,.3);background:rgba(0,180,216,.04)">
+    <div class="ctitle" style="color:var(--teal);border-color:rgba(0,180,216,.2)">&#127919; &#1605;&#1593;&#1591;&#1610;&#1575;&#1578; &#1575;&#1604;&#1581;&#1587;&#1575;&#1576; &#1575;&#1604;&#1605;&#1576;&#1575;&#1588;&#1585; — &#1593;&#1583;&#1617;&#1604; &#1608;&#1610;&#1581;&#1587;&#1576; &#1571;&#1608;&#1578;&#1608;&#1605;&#1575;&#1578;&#1610;&#1603;</div>
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:16px">
+      <div class="fld">
+        <label style="color:var(--teal)">&#127908; Modifier (%)</label>
+        <input type="number" id="roi-mod" value="0" step="0.5" oninput="cROI()">
+        <span class="unit">&#1578;&#1593;&#1583;&#1610;&#1604; &#1593;&#1604;&#1609; &#1575;&#1604;&#1585;&#1576;&#1581; (+/-)</span>
+      </div>
+      <div class="fld">
+        <label style="color:var(--orange)">&#128230; Cost (TND)</label>
+        <input type="number" id="roi-cost" value="" step="0.1" placeholder="&#1605;&#1606; &#1575;&#1604;&#1581;&#1575;&#1587;&#1576;&#1577;" oninput="cROI()">
+        <span class="unit">Delivered Cost — &#1601;&#1575;&#1585;&#1594; = &#1610;&#1587;&#1578;&#1582;&#1583;&#1605; &#1575;&#1604;&#1581;&#1575;&#1587;&#1576;&#1577;</span>
+      </div>
+      <div class="fld">
+        <label style="color:var(--accent)">&#128227; CPA ($)</label>
+        <input type="number" id="roi-cpa" value="" step="0.1" placeholder="&#1605;&#1606; &#1575;&#1604;&#1581;&#1575;&#1587;&#1576;&#1577;" oninput="cROI()">
+        <span class="unit">$ / &#1591;&#1604;&#1576;&#1610;&#1577; &#1605;&#1608;&#1589;&#1617;&#1604;&#1577; — &#1601;&#1575;&#1585;&#1594; = &#1605;&#1606; &#1575;&#1604;&#1581;&#1575;&#1587;&#1576;&#1577;</span>
+      </div>
+      <div class="fld">
+        <label style="color:var(--gold)">&#128176; Budget ($)</label>
+        <input type="number" id="roi-bud" value="" step="1" placeholder="&#1605;&#1579;&#1575;&#1604;: 20" oninput="cROI()">
+        <span class="unit">&#1575;&#1604;&#1605;&#1610;&#1586;&#1575;&#1606;&#1610;&#1577; &#1575;&#1604;&#1610;&#1608;&#1605;&#1610;&#1577; &#1576;&#1575;&#1604;&#1583;&#1608;&#1604;&#1575;&#1585;</span>
+      </div>
+    </div>
+    <!-- INSTANT RESULT ROW -->
+    <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:10px" id="roi-instant">
+      <div class="rc" style="border-color:var(--teal)"><div class="rlb">&#1591;&#1604;&#1576;&#1610;&#1575;&#1578; &#1605;&#1608;&#1589;&#1617;&#1604;&#1577; / &#1610;&#1608;&#1605;</div><div class="rv2 t" id="ri-ords">&#8212;</div><div class="rsb">&#1576;&#1606;&#1575;&#1569;&#1611; &#1593;&#1604;&#1609; Budget ÷ CPA</div></div>
+      <div class="rc"><div class="rlb">&#1585;&#1576;&#1581; / &#1602;&#1591;&#1593;&#1577; (Modifier)</div><div class="rv2 gd" id="ri-pp">&#8212;</div><div class="rsb">TND &#1576;&#1593;&#1583; &#1575;&#1604;&#1578;&#1593;&#1583;&#1610;&#1604;</div></div>
+      <div class="rc hl"><div class="rlb">&#1589;&#1575;&#1601;&#1610; &#1575;&#1604;&#1585;&#1576;&#1581; &#1575;&#1604;&#1610;&#1608;&#1605;&#1610;</div><div class="rv2 g" id="ri-daily">&#8212;</div><div class="rsb">TND / &#1610;&#1608;&#1605;</div></div>
+      <div class="rc"><div class="rlb">&#1589;&#1575;&#1601;&#1610; &#1575;&#1604;&#1585;&#1576;&#1581; &#1575;&#1604;&#1571;&#1587;&#1576;&#1608;&#1593;&#1610;</div><div class="rv2" id="ri-weekly">&#8212;</div><div class="rsb">TND / &#1571;&#1587;&#1576;&#1608;&#1593;</div></div>
+      <div class="rc"><div class="rlb">&#1589;&#1575;&#1601;&#1610; &#1575;&#1604;&#1585;&#1576;&#1581; &#1575;&#1604;&#1588;&#1607;&#1585;&#1610;</div><div class="rv2" id="ri-monthly">&#8212;</div><div class="rsb">TND / &#1588;&#1607;&#1585;</div></div>
+    </div>
+  </div>
+
+  <div class="sumrow">
+    <div class="sc"><div class="si d">&#128197;</div><div><div class="sp">&#1589;&#1575;&#1601;&#1610; &#1575;&#1604;&#1585;&#1576;&#1581; &#1575;&#1604;&#1610;&#1608;&#1605;&#1610;</div><div class="sa" id="r2d">0 TND</div><div class="scur">&#1583;&#1610;&#1606;&#1575;&#1585; &#1578;&#1608;&#1606;&#1587;&#1610;</div></div></div>
+    <div class="sc"><div class="si w">&#128198;</div><div><div class="sp">&#1589;&#1575;&#1601;&#1610; &#1575;&#1604;&#1585;&#1576;&#1581; &#1575;&#1604;&#1571;&#1587;&#1576;&#1608;&#1593;&#1610;</div><div class="sa" id="r2w">0 TND</div><div class="scur">&#1583;&#1610;&#1606;&#1575;&#1585; &#1578;&#1608;&#1606;&#1587;&#1610;</div></div></div>
+    <div class="sc"><div class="si m">&#128467;</div><div><div class="sp">&#1589;&#1575;&#1601;&#1610; &#1575;&#1604;&#1585;&#1576;&#1581; &#1575;&#1604;&#1588;&#1607;&#1585;&#1610;</div><div class="sa" id="r2m">0 TND</div><div class="scur">&#1583;&#1610;&#1606;&#1575;&#1585; &#1578;&#1608;&#1606;&#1587;&#1610;</div></div></div>
+  </div>
+  <div class="roi-wrap">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;flex-wrap:wrap;gap:8px">
+      <div style="font-weight:700;color:var(--white)">&#128200; &#1589;&#1575;&#1601;&#1610; &#1575;&#1604;&#1585;&#1576;&#1581; &#1575;&#1604;&#1610;&#1608;&#1605;&#1610; (TND) &#8212; Budget &#215; CPA</div>
+      <div style="font-size:.8rem;color:var(--muted)">&#1575;&#1604;&#1580;&#1583;&#1608;&#1604; &#1610;&#1578;&#1581;&#1583;&#1617;&#1579; &#1578;&#1604;&#1602;&#1575;&#1574;&#1610;&#1575; &#1605;&#1606; &#1575;&#1604;&#1581;&#1575;&#1587;&#1576;&#1577; + Modifier</div>
+    </div>
+    <div style="overflow-x:auto"><table class="rtbl" id="rtbl"></table></div>
+    <div class="ntb">&#8505;&#65039; &#1575;&#1604;&#1602;&#1610;&#1605; TND. &#1589;&#1575;&#1601;&#1610; = (&#1591;&#1604;&#1576;&#1610;&#1575;&#1578; &#215; &#1585;&#1576;&#1581;/&#1602;&#1591;&#1593;&#1577;) &#8722; &#1578;&#1603;&#1575;&#1604;&#1610;&#1601; &#1573;&#1593;&#1604;&#1575;&#1606; &#8722; &#1582;&#1583;&#1605;&#1575;&#1578; &#1610;&#1608;&#1605;&#1610;&#1577;</div>
+  </div>
+</div>
+
+</div><!-- /main -->
+
+<script>
+var SV=[{n:'urp cod pilot',m:150},{n:'spy tool',m:100},{n:'site/foorweb',m:75},{n:'internet',m:60}];
+var _pp=0, _rate=3.25, _sM=0;
+
+window.addEventListener('DOMContentLoaded',function(){
+  var d=new Date();
+  document.getElementById('dt').textContent=d.toLocaleDateString('ar-TN',{weekday:'long',year:'numeric',month:'long',day:'numeric'});
+  rs();c();
+});
+
+function sw(t,b){
+  document.querySelectorAll('.tbtn').forEach(function(x){x.classList.remove('on')});
+  document.querySelectorAll('.sec').forEach(function(x){x.classList.remove('on')});
+  b.classList.add('on');
+  document.getElementById('sec-'+t).classList.add('on');
+  c();
+}
+
+function rs(){
+  var b=document.getElementById('sb');b.innerHTML='';
+  SV.forEach(function(sv,i){
+    var tr=document.createElement('tr');
+    tr.innerHTML='<td><input type="text" value="'+sv.n+'" oninput="SV['+i+'].n=this.value" style="direction:rtl;text-align:right;background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:5px 9px;color:var(--white);font-size:.86rem;width:100%"></td>'
+      +'<td><input type="number" value="'+sv.m+'" min="0" step="1" oninput="SV['+i+'].m=parseFloat(this.value)||0;c()"></td>'
+      +'<td id="sp'+i+'" style="color:var(--teal);font-weight:700">&#8212;</td>'
+      +'<td><button class="rmbtn" onclick="SV.splice('+i+',1);rs()">&#10005;</button></td>';
+    b.appendChild(tr);
+  });
+  c();
+}
+function addS(){SV.push({n:'خدمة جديدة',m:0});rs();}
+
+function g(id){return parseFloat(document.getElementById(id).value)||0;}
+function s(id,v){var e=document.getElementById(id);if(e)e.textContent=v;}
+
+function c(){
+  var rate=g('ex')||3.25;
+  var dO=g('do')||10;
+  var conf=g('cr')/100||0.7;
+  var del=g('dr')/100||0.65;
+  var buyU=g('bu'); var sellT=g('st');
+  var dFee=g('df'); var pk=g('pk'); var ret=g('rc2'); var cpaU=g('cp2');
+  var pfPct=g('pf')||0; // Payment Fee %
+  // شحن الصين بالدولار محوّل + شحن الجزائر بالدينار — كلهم مع بعض
+  var shipCN=(g('scn')+g('ecn'))*rate;
+  var shipAL=g('sal')+g('eal');
+  var shipT=shipCN+shipAL;
+  var stEl=document.getElementById('ship-total');
+  if(stEl)stEl.textContent=shipT.toFixed(2)+' TND (CN: '+shipCN.toFixed(2)+' + DZ: '+shipAL.toFixed(2)+')';
+  var buyT=buyU*rate;
+  var ci=buyT+shipT;
+  var cf=del>0?ci/del:ci;
+  var cpaT=cpaU*rate;
+  var pfVal=sellT*(pfPct/100); // Payment Fee TND
+  var mDel=dO*conf*del*30;
+  var sM=0; SV.forEach(function(sv){sM+=sv.m;});
+  var sP=mDel>0?sM/mDel:0;
+  SV.forEach(function(sv,i){var e=document.getElementById('sp'+i);if(e)e.textContent=(mDel>0?(sv.m/mDel).toFixed(3):'0')+' TND';});
+  s('stm',sM.toFixed(2)+' TND'); s('stp',sP.toFixed(3)+' TND');
+  var tc=cf+dFee+pk+cpaT+sP+ret+pfVal;
+  var gm=sellT-cf-dFee-pk-pfVal;
+  var pp=sellT-tc;
+  var pu=pp/rate;
+  var dc=dO*conf*del;
+  var dp=pp*dc;
+  var mp=sellT>0?(pp/sellT)*100:0;
+  // Save shared state
+  _pp=pp; _rate=rate; _sM=sM;
+  s('rp',rate.toFixed(2));
+  // Payment Fee display
+  var pfE=document.getElementById('pf-val');
+  if(pfE)pfE.textContent=pfVal.toFixed(3)+' TND';
+  s('k1',f2(buyT)+' TND'); s('k2',f2(shipT)+' TND'); s('k3',f2(ci)+' TND');
+  s('k4',f2(cf)+' TND'); s('k5',f2(dFee+pk)+' TND'); s('k6',f2(cpaT)+' TND');
+  s('k7',f2(sP)+' TND'); s('k8',f2(ret)+' TND');
+  s('kpf',f2(pfVal)+' TND');
+  s('k9',f2(tc)+' TND');
+  var pe=document.getElementById('k10');
+  pe.textContent=f2(pp)+' TND'; pe.style.color=pp>=0?'var(--green)':'var(--red)';
+  cv('r1',f2(pp),pp); cv('r2',f4(pu),pp);
+  s('r3',f2(gm)+' TND'); cv('r4',f2(dp),dp); s('r4c',dc.toFixed(1));
+  s('r5',f2(cf)+' TND');
+  var me=document.getElementById('r6'); me.textContent=mp.toFixed(1)+'%';
+  me.style.color=mp>30?'var(--green)':mp>10?'var(--orange)':'var(--red)';
+  su('sd',dp); su('sw',dp*7); su('sm',dp*30);
+  su('r2d',dp); su('r2w',dp*7); su('r2m',dp*30);
+  roi(_pp,_rate,_sM);
+  cROI();
+}
+
+// ===== ROI INSTANT CALCULATOR =====
+function cROI(){
+  var rate=_rate||3.25;
+  var mod=g('roi-mod'); // Modifier %
+  // Cost: use manual override or base profit from calculator
+  var costEl=document.getElementById('roi-cost');
+  var cpaEl=document.getElementById('roi-cpa');
+  var budEl=document.getElementById('roi-bud');
+  var manualCost=costEl&&costEl.value!==''?parseFloat(costEl.value):null;
+  var manualCpa=cpaEl&&cpaEl.value!==''?parseFloat(cpaEl.value):null;
+  var budget=budEl&&budEl.value!==''?parseFloat(budEl.value):null;
+  // Use manual or fall back to calculator values
+  var pp=_pp*(1+mod/100); // apply modifier to profit per unit
+  if(budget===null||manualCpa===null){
+    // not enough data, show dashes
+    s('ri-ords','—'); s('ri-pp',f2(pp)+' TND');
+    s('ri-daily','—'); s('ri-weekly','—'); s('ri-monthly','—');
+    return;
+  }
+  var svcDay=_sM/30;
+  var ords=budget/manualCpa; // delivered orders from budget
+  var adsCostTND=budget*rate;
+  var netDay=(ords*pp)-adsCostTND-svcDay;
+  s('ri-ords',ords.toFixed(1));
+  cv('ri-pp',f2(pp),pp);
+  cv('ri-daily',f2(netDay),netDay);
+  cv('ri-weekly',f2(netDay*7),netDay);
+  cv('ri-monthly',f2(netDay*30),netDay);
+}
+
+// ===== ROI MATRIX TABLE =====
+var CPAS=[1,2,3,4,5,6,7,8,9,10];
+var BUDS=[5,10,15,20,30,40,50,75,100,150,200];
+
+function roi(pp,rate,sM){
+  var t=document.getElementById('rtbl');
+  var mod=g('roi-mod');
+  var ppM=pp*(1+mod/100); // apply modifier to table too
+  var cols=CPAS.slice().reverse();
+  var h='<thead><tr><th class="hl2">Budget \\ CPA</th>';
+  cols.forEach(function(x){h+='<th class="tc">'+x+'$</th>';});
+  h+='</tr></thead><tbody>';
+  var sd=sM/30;
+  BUDS.forEach(function(b){
+    h+='<tr><td class="bc">'+b+' $</td>';
+    cols.forEach(function(cpa){
+      var ords=b/cpa;
+      var net=(ords*ppM)-(b*rate)-sd;
+      var cl=net>ppM*5?'cp':net>0?'ck':net>-ppM*3&&ppM>0?'cw':'cl';
+      if(ppM<=0&&net<=0)cl='cl';
+      h+='<td class="'+cl+'">'+(net>0?'+':'')+Math.round(net)+'</td>';
+    });
+    h+='</tr>';
+  });
+  h+='</tbody>'; t.innerHTML=h;
+}
+
+function f2(n){return isNaN(n)?'—':n.toFixed(2);}
+function f4(n){return isNaN(n)?'—':n.toFixed(4);}
+function cv(id,val,num){
+  var e=document.getElementById(id);if(!e)return;
+  e.textContent=val;
+  e.className='rv2 '+(num>0?'g':num<0?'r':'o');
+}
+function su(id,v){
+  var e=document.getElementById(id);if(!e)return;
+  e.textContent=Math.round(v).toLocaleString('fr-TN')+' TND';
+  e.className='sa '+(v>0?'p':v<0?'n':'');
+}
+</script>
+
+</body>
+</html>
