@@ -390,10 +390,18 @@ table.rtbl td.bc{background:var(--bg3);color:var(--accent2);font-weight:800;font
       </div>
 
       <!-- New Box for Direct Client Price -->
-      <div style="background:rgba(6,214,160,.1);border:1px solid var(--green);padding:15px;border-radius:8px;margin-bottom:14px;text-align:center">
-        <div style="color:var(--green);font-size:.95rem;font-weight:700;margin-bottom:5px">&#128227; &#1575;&#1604;&#1587;&#1593;&#1585; &#1575;&#1604;&#1606;&#1607;&#1575;&#1574;&#1610; &#1604;&#1604;&#1578;&#1608;&#1606;&#1587;&#1610; (&#1604;&#1604;&#1581;&#1576;&#1577; &#1575;&#1604;&#1608;&#1575;&#1581;&#1583;&#1577;)</div>
-        <div id="sm-c-cli-tnd" style="font-size:1.8rem;font-weight:bold;color:var(--white)">-- TND</div>
-        <div id="sm-c-cli-usd" style="font-size:1rem;color:var(--muted)">(-- $)</div>
+      <div style="background:rgba(6,214,160,.1);border:1px solid var(--green);padding:15px;border-radius:8px;margin-bottom:14px">
+        <div style="color:var(--green);font-size:.95rem;font-weight:700;margin-bottom:10px;text-align:center">&#128227; &#1605;&#1575; &#1587;&#1578;&#1591;&#1604;&#1576;&#1607; &#1605;&#1606; &#1575;&#1604;&#1593;&#1605;&#1610;&#1604; &#1575;&#1604;&#1578;&#1608;&#1606;&#1587;&#1610; (&#1576;&#1575;&#1604;&#1583;&#1610;&#1606;&#1575;&#1585; &#1575;&#1604;&#1578;&#1608;&#1606;&#1587;&#1610;)</div>
+        <div class="g2">
+          <div style="text-align:center">
+            <div style="font-size:.8rem;color:var(--muted);margin-bottom:4px">&#1587;&#1593;&#1585; &#1575;&#1604;&#1581;&#1576;&#1577; &#1575;&#1604;&#1608;&#1575;&#1581;&#1583;&#1577;</div>
+            <div id="sm-c-cli-tnd-item" style="font-size:1.5rem;font-weight:bold;color:var(--white)">-- TND</div>
+          </div>
+          <div style="text-align:center;border-left:1px solid rgba(6,214,160,.2)">
+            <div style="font-size:.8rem;color:var(--muted);margin-bottom:4px">&#1587;&#1593;&#1585; &#1575;&#1604;&#1603;&#1605;&#1610;&#1577; &#1575;&#1604;&#1605;&#1591;&#1604;&#1608;&#1576;&#1577; &#1603;&#1575;&#1605;&#1604;&#1577;</div>
+            <div id="sm-c-cli-tnd-tot" style="font-size:1.5rem;font-weight:bold;color:var(--white)">-- TND</div>
+          </div>
+        </div>
       </div>
 
       <div class="bkd" style="border-color:var(--teal);background:rgba(0,180,216,.04)">
@@ -542,6 +550,7 @@ function c(){
   su('r2d',dp); su('r2w',dp*7); su('r2m',dp*30);
   roi(_pp,_rate,_sM);
   cROI();
+  cSrc();
 }
 
 // ===== ROI INSTANT CALCULATOR =====
@@ -647,22 +656,23 @@ function cSrc(){
   var cli_tn = cli_tn_kg * wt;
   var cli_fee = g('src-fee-cli');
   var cli_total = cli_p + cli_cn + cli_tn + cli_fee;
-
-  // New Highlight for Client Price Per Item (TND and USD)
-  var elCliTnd = document.getElementById('sm-c-cli-tnd');
-  var elCliUsd = document.getElementById('sm-c-cli-usd');
-  if(elCliTnd) elCliTnd.textContent = (cli_total * rTND).toFixed(2) + ' TND';
-  if(elCliUsd) elCliUsd.textContent = '(' + cli_total.toFixed(2) + ' $)';
-
-  // Update UI Labels for Client Costs
-  var elLblCnCli = document.getElementById('lbl-cn-cli'); if(elLblCnCli) elLblCnCli.innerHTML = `&#1587;&#1593;&#1585; &#1575;&#1604;&#1588;&#1581;&#1606; &#1604;&#1604;&#1581;&#1576;&#1577;: $${cli_cn.toFixed(2)}`;
-  var elLblTnCli = document.getElementById('lbl-tn-cli'); if(elLblTnCli) elLblTnCli.innerHTML = `&#1587;&#1593;&#1585; &#1575;&#1604;&#1588;&#1581;&#1606; &#1604;&#1604;&#1581;&#1576;&#1577;: $${cli_tn.toFixed(2)}`;
   
   // Stock & Delivery
   var qty = g('src-qty')||0;
   var dlv = g('src-dlv')||0;
   var paid = g('src-paid')||0;
   var rem = qty - dlv;
+
+  // New Highlight for Client Price Per Item and Total Quantity (TND)
+  var cli_tot_tnd = (cli_total * qty) * rTND;
+  var elCliTndItem = document.getElementById('sm-c-cli-tnd-item');
+  var elCliTndTot = document.getElementById('sm-c-cli-tnd-tot');
+  if(elCliTndItem) elCliTndItem.textContent = (cli_total * rTND).toFixed(2) + ' TND';
+  if(elCliTndTot) elCliTndTot.textContent = Math.round(cli_tot_tnd).toLocaleString('fr-TN') + ' TND';
+
+  // Update UI Labels for Client Costs
+  var elLblCnCli = document.getElementById('lbl-cn-cli'); if(elLblCnCli) elLblCnCli.innerHTML = `&#1587;&#1593;&#1585; &#1575;&#1604;&#1588;&#1581;&#1606; &#1604;&#1604;&#1581;&#1576;&#1577;: $${cli_cn.toFixed(2)}`;
+  var elLblTnCli = document.getElementById('lbl-tn-cli'); if(elLblTnCli) elLblTnCli.innerHTML = `&#1587;&#1593;&#1585; &#1575;&#1604;&#1588;&#1581;&#1606; &#1604;&#1604;&#1581;&#1576;&#1577;: $${cli_tn.toFixed(2)}`;
   
   var elRem = document.getElementById('src-rem');
   if(elRem) {
