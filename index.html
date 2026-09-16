@@ -124,9 +124,9 @@ table.rtbl td.bc{background:var(--bg3);color:var(--accent2);font-weight:800;font
   <button class="tbtn on" onclick="sw('calc',this)">&#128230; &#1581;&#1575;&#1587;&#1576;&#1577; &#1575;&#1604;&#1605;&#1606;&#1578;&#1580;</button>
   <button class="tbtn" onclick="sw('roi',this)">&#128202; &#1580;&#1583;&#1608;&#1604; &#1575;&#1604;&#1578;&#1608;&#1602;&#1593;&#1575;&#1578;</button>
   <button class="tbtn" onclick="sw('source',this)">&#128229; &#1602;&#1587;&#1605; &#1575;&#1604;&#1587;&#1608;&#1585;&#1587;&#1610;&#1606;&#1594; (Sourcing)</button>
-</div>
-
-<div class="main">
+<button class="tbtn" onclick="sw('simple',this)">&#129522; &#1581;&#1575;&#1587;&#1576;&#1577; &#1587;&#1585;&#1610;&#1593;&#1577; (Simple)</button>
+  </div>
+  <div class="main">
 
 <!-- CALC -->
 <div class="sec on" id="sec-calc">
@@ -459,6 +459,74 @@ table.rtbl td.bc{background:var(--bg3);color:var(--accent2);font-weight:800;font
   </div>
 </div>
 
+  <!-- SIMPLE CALC -->
+  <div class="sec" id="sec-simple">
+    <div class="card" style="margin-bottom:20px;direction:ltr;text-align:left">
+      <div class="ctitle" style="direction:rtl">&#129522; ????? ????? (Simple Calculator)</div>
+      
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:14px">
+        <div class="fld"><label>Delivery Cost (TND)</label><input type="number" id="simp-del-cost" value="8" oninput="cSimp()"></div>
+        <div class="fld"><label>Return Cost (TND)</label><input type="number" id="simp-ret-cost" value="2" oninput="cSimp()"></div>
+        <div class="fld"><label>Fulfillment Cost (per confirmed) (TND)</label><input type="number" id="simp-ful-cost" value="1" oninput="cSimp()"></div>
+      </div>
+      
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:20px">
+        <div>
+          <div class="fld" style="margin-bottom:10px"><label>Product Cost (TND)</label><input type="number" id="simp-prod-cost" value="10" oninput="cSimp()"></div>
+          <div class="fld"><label>Total Selling Price (Delivery included) (TND)</label><input type="number" id="simp-sell-price" value="39" oninput="cSimp()"></div>
+        </div>
+        <div>
+          <div class="fld" style="margin-bottom:10px"><label>Lead Cost (TND)</label><input type="number" id="simp-lead-cost" value="1.5" step="0.1" oninput="cSimp()"></div>
+          <div class="fld"><label>Total Leads Received</label><input type="number" id="simp-leads-tot" value="100" oninput="cSimp()"></div>
+        </div>
+        <div>
+          <div class="fld" style="margin-bottom:10px"><label>Confirmation Rate (%)</label><input type="number" id="simp-conf-rate" value="70" oninput="cSimp()"></div>
+          <div class="fld"><label>Delivery Rate (%)</label><input type="number" id="simp-del-rate" value="65" oninput="cSimp()"></div>
+        </div>
+      </div>
+      
+      <button onclick="cSimp()" style="width:100%;padding:12px;background:#6f42c1;color:#fff;border:none;border-radius:8px;font-weight:bold;font-size:1.1rem;cursor:pointer;margin-bottom:20px;font-family:inherit;transition:all 0.2s">Calculate</button>
+      
+      <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-bottom:20px">
+        <!-- Confirmed Leads -->
+        <div style="background:var(--bg3);border:1px dashed #6f42c1;border-radius:10px;padding:15px;text-align:center">
+          <div style="font-size:1.5rem;margin-bottom:5px">&#128717;&#65039;</div>
+          <div style="font-size:.8rem;color:var(--muted);margin-bottom:5px;font-weight:700">Confirmed Leads</div>
+          <div style="font-size:1.2rem;font-weight:900;color:#6f42c1"><span id="simp-res-conf">70.00</span> <span style="font-size:.7rem;font-weight:normal;color:var(--muted)">Unit</span></div>
+        </div>
+        <!-- Delivered Leads -->
+        <div style="background:var(--bg3);border:1px dashed #6f42c1;border-radius:10px;padding:15px;text-align:center">
+          <div style="font-size:1.5rem;margin-bottom:5px">&#128230;</div>
+          <div style="font-size:.8rem;color:var(--muted);margin-bottom:5px;font-weight:700">Delivered Leads</div>
+          <div style="font-size:1.2rem;font-weight:900;color:#6f42c1"><span id="simp-res-del">45.50</span> <span style="font-size:.7rem;font-weight:normal;color:var(--muted)">Unit</span></div>
+        </div>
+        <!-- Profit Per Unit -->
+        <div style="background:var(--bg3);border:1px dashed #6f42c1;border-radius:10px;padding:15px;text-align:center">
+          <div style="font-size:1.5rem;margin-bottom:5px">&#128184;</div>
+          <div style="font-size:.8rem;color:var(--muted);margin-bottom:5px;font-weight:700">Profit Per Unit</div>
+          <div style="font-size:1.2rem;font-weight:900;color:#6f42c1"><span id="simp-res-ppu">15.09</span> <span style="font-size:.7rem;font-weight:normal;color:var(--muted)">TND/Unit</span></div>
+        </div>
+        <!-- Total Profit -->
+        <div style="background:var(--bg3);border:1px dashed #6f42c1;border-radius:10px;padding:15px;text-align:center">
+          <div style="font-size:1.5rem;margin-bottom:5px">&#128176;</div>
+          <div style="font-size:.8rem;color:var(--muted);margin-bottom:5px;font-weight:700">Total Profit</div>
+          <div style="font-size:1.2rem;font-weight:900;color:#6f42c1"><span id="simp-res-tot">686.50</span> <span style="font-size:.7rem;font-weight:normal;color:var(--muted)">TND</span></div>
+        </div>
+        <!-- Lead Cost Per Delivered -->
+        <div style="background:var(--bg3);border:1px dashed #6f42c1;border-radius:10px;padding:15px;text-align:center">
+          <div style="font-size:1.5rem;margin-bottom:5px">&#128666;</div>
+          <div style="font-size:.8rem;color:var(--muted);margin-bottom:5px;font-weight:700">Lead Cost Per Delivered</div>
+          <div style="font-size:1.2rem;font-weight:900;color:#6f42c1"><span id="simp-res-lcpd">3.30</span> <span style="font-size:.7rem;font-weight:normal;color:var(--muted)">TND</span></div>
+        </div>
+      </div>
+      
+      <div style="text-align:center">
+        <div style="display:inline-block;background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:12px 25px;font-weight:700">
+          <span style="color:var(--muted)">Break-Even Lead Cost:</span> <span id="simp-res-be" style="color:#06d6a0;font-size:1.2rem;margin-left:10px">8.37 TND</span>
+        </div>
+      </div>
+    </div>
+  </div>
 </div><!-- /main -->
 
 
@@ -746,8 +814,48 @@ function cSrc(){
   s('s-t-dzd', Math.round(p_tot_dzd).toLocaleString('fr-DZ') + ' DZD');
 }
 
+function cSimp() {
+  var delCost = parseFloat(document.getElementById('simp-del-cost').value) || 0;
+  var retCost = parseFloat(document.getElementById('simp-ret-cost').value) || 0;
+  var fulCost = parseFloat(document.getElementById('simp-ful-cost').value) || 0;
+  var prodCost = parseFloat(document.getElementById('simp-prod-cost').value) || 0;
+  var sellPrice = parseFloat(document.getElementById('simp-sell-price').value) || 0;
+  var leadCost = parseFloat(document.getElementById('simp-lead-cost').value) || 0;
+  var totalLeads = parseFloat(document.getElementById('simp-leads-tot').value) || 0;
+  var confRate = parseFloat(document.getElementById('simp-conf-rate').value) / 100 || 0;
+  var delRate = parseFloat(document.getElementById('simp-del-rate').value) / 100 || 0;
+
+  var confLeads = totalLeads * confRate;
+  var delLeads = confLeads * delRate;
+  var retLeads = confLeads - delLeads;
+  
+  var revenue = delLeads * sellPrice;
+  var totalProdCost = delLeads * prodCost;
+  var totalDelCost = delLeads * delCost;
+  var totalRetCost = retLeads * retCost;
+  var totalFulCost = confLeads * fulCost;
+  var totalAdSpend = totalLeads * leadCost;
+
+  var totalCosts = totalProdCost + totalDelCost + totalRetCost + totalFulCost + totalAdSpend;
+  var totalProfit = revenue - totalCosts;
+  var profitPerUnit = delLeads > 0 ? totalProfit / delLeads : 0;
+  var leadCostPerDelivered = delLeads > 0 ? totalAdSpend / delLeads : 0;
+  
+  var currentProfitNoAds = totalProfit + totalAdSpend;
+  var breakEvenLeadCost = totalLeads > 0 ? currentProfitNoAds / totalLeads : 0;
+
+  document.getElementById('simp-res-conf').textContent = confLeads.toFixed(2);
+  document.getElementById('simp-res-del').textContent = delLeads.toFixed(2);
+  document.getElementById('simp-res-ppu').textContent = profitPerUnit.toFixed(2);
+  document.getElementById('simp-res-tot').textContent = totalProfit.toFixed(2);
+  document.getElementById('simp-res-lcpd').textContent = leadCostPerDelivered.toFixed(2);
+  document.getElementById('simp-res-be').textContent = breakEvenLeadCost.toFixed(2) + ' TND';
+}
+
+cSimp();
 </script>
 
 </body>
 </html>
+
 
