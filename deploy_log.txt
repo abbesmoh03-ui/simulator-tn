@@ -1,0 +1,21 @@
+Vercel CLI 54.20.1 (Node.js 24.17.0)
+Retrieving project…
+Deploying 2-78d1/simulator-tn
+Uploading [--------------------] (0.0B/417B)
+Uploading [=============-------] (275.0B/417B)
+Uploading [====================] (417.0B/417B)
+  Inspect         https://vercel.com/2-78d1/simulator-tn/8hR3K8DyDT7xG8hTnpJj3QWyMRwP
+  Production      https://simulator-2w3kgwovq-2-78d1.vercel.app
+Building…
+{
+  "status": "error",
+  "reason": "deploy_failed",
+  "message": "Not authorized",
+  "next": [
+    {
+      "command": "vercel deploy --scope 2-78d1",
+      "when": "retry deploy"
+    }
+  ]
+}
+Error: Not authorized

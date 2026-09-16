@@ -1,0 +1,13 @@
+const jsdom = require('jsdom');
+const { JSDOM } = jsdom;
+const fs = require('fs');
+const html = fs.readFileSync('index.html', 'utf8');
+const dom = new JSDOM(html);
+global.window = dom.window;
+global.document = dom.window.document;
+const script = html.match(/<script>([\s\S]*?)<\/script>/)[1];
+eval(script);
+window.document.dispatchEvent(new window.Event('DOMContentLoaded'));
+cSrc();
+console.log('dzd_tnd:', document.getElementById('src-dzd-tnd').textContent);
+console.log('sm-c-cli-tnd:', document.getElementById('sm-c-cli-tnd').textContent);
