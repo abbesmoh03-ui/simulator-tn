@@ -487,7 +487,7 @@ table.rtbl td.bc{background:var(--bg3);color:var(--accent2);font-weight:800;font
       
       <button onclick="cSimp()" style="width:100%;padding:12px;background:#6f42c1;color:#fff;border:none;border-radius:8px;font-weight:bold;font-size:1.1rem;cursor:pointer;margin-bottom:20px;font-family:inherit;transition:all 0.2s">Calculate</button>
       
-      <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-bottom:20px">
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:20px">
         <!-- Confirmed Leads -->
         <div style="background:var(--bg3);border:1px dashed #6f42c1;border-radius:10px;padding:15px;text-align:center">
           <div style="font-size:1.5rem;margin-bottom:5px">&#128717;&#65039;</div>
@@ -517,6 +517,12 @@ table.rtbl td.bc{background:var(--bg3);color:var(--accent2);font-weight:800;font
           <div style="font-size:1.5rem;margin-bottom:5px">&#128666;</div>
           <div style="font-size:.8rem;color:var(--muted);margin-bottom:5px;font-weight:700">Lead Cost Per Delivered</div>
           <div style="font-size:1.2rem;font-weight:900;color:#6f42c1"><span id="simp-res-lcpd">3.30</span> <span style="font-size:.7rem;font-weight:normal;color:var(--muted)">TND</span></div>
+        </div>
+        <!-- Wasted Fulfillment -->
+        <div style="background:var(--bg3);border:1px dashed #ef476f;border-radius:10px;padding:15px;text-align:center">
+          <div style="font-size:1.5rem;margin-bottom:5px">&#128680;</div>
+          <div style="font-size:.8rem;color:var(--muted);margin-bottom:5px;font-weight:700">تكلفة المرتجعات (Fulfillment Wasted)</div>
+          <div style="font-size:1.2rem;font-weight:900;color:#ef476f"><span id="simp-res-wast">0.00</span> <span style="font-size:.7rem;font-weight:normal;color:var(--muted)">TND</span></div>
         </div>
       </div>
       
@@ -843,12 +849,14 @@ function cSimp() {
   
   var currentProfitNoAds = totalProfit + totalAdSpend;
   var breakEvenLeadCost = totalLeads > 0 ? currentProfitNoAds / totalLeads : 0;
+  var wastedFulfillment = retLeads * fulCost;
 
   document.getElementById('simp-res-conf').textContent = confLeads.toFixed(2);
   document.getElementById('simp-res-del').textContent = delLeads.toFixed(2);
   document.getElementById('simp-res-ppu').textContent = profitPerUnit.toFixed(2);
   document.getElementById('simp-res-tot').textContent = totalProfit.toFixed(2);
   document.getElementById('simp-res-lcpd').textContent = leadCostPerDelivered.toFixed(2);
+  document.getElementById('simp-res-wast').textContent = wastedFulfillment.toFixed(2);
   document.getElementById('simp-res-be').textContent = breakEvenLeadCost.toFixed(2) + ' TND';
 }
 
