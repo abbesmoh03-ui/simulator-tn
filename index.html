@@ -467,7 +467,7 @@ table.rtbl td.bc{background:var(--bg3);color:var(--accent2);font-weight:800;font
       <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:14px">
         <div class="fld"><label>Delivery Cost (TND)</label><input type="number" id="simp-del-cost" value="8" oninput="cSimp()"></div>
         <div class="fld"><label>Return Cost (TND)</label><input type="number" id="simp-ret-cost" value="2" oninput="cSimp()"></div>
-        <div class="fld"><label>Fulfillment Cost (per confirmed) (TND)</label><input type="number" id="simp-ful-cost" value="1" oninput="cSimp()"></div>
+        <div class="fld"><label>Fulfillment Cost (per delivered) (TND)</label><input type="number" id="simp-ful-cost" value="1" oninput="cSimp()"></div>
       </div>
       
       <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:20px">
@@ -521,7 +521,7 @@ table.rtbl td.bc{background:var(--bg3);color:var(--accent2);font-weight:800;font
         <!-- Wasted Fulfillment -->
         <div style="background:var(--bg3);border:1px dashed #ef476f;border-radius:10px;padding:15px;text-align:center">
           <div style="font-size:1.5rem;margin-bottom:5px">&#128680;</div>
-          <div style="font-size:.8rem;color:var(--muted);margin-bottom:5px;font-weight:700">تكلفة المرتجعات (Fulfillment Wasted)</div>
+          <div style="font-size:.8rem;color:var(--muted);margin-bottom:5px;font-weight:700">تكلفة المرتجعات (Return Wasted)</div>
           <div style="font-size:1.2rem;font-weight:900;color:#ef476f"><span id="simp-res-wast">0.00</span> <span style="font-size:.7rem;font-weight:normal;color:var(--muted)">TND</span></div>
         </div>
       </div>
@@ -839,7 +839,7 @@ function cSimp() {
   var totalProdCost = delLeads * prodCost;
   var totalDelCost = delLeads * delCost;
   var totalRetCost = retLeads * retCost;
-  var totalFulCost = confLeads * fulCost;
+  var totalFulCost = delLeads * fulCost;
   var totalAdSpend = totalLeads * leadCost;
 
   var totalCosts = totalProdCost + totalDelCost + totalRetCost + totalFulCost + totalAdSpend;
@@ -849,7 +849,7 @@ function cSimp() {
   
   var currentProfitNoAds = totalProfit + totalAdSpend;
   var breakEvenLeadCost = totalLeads > 0 ? currentProfitNoAds / totalLeads : 0;
-  var wastedFulfillment = retLeads * fulCost;
+  var wastedFulfillment = retLeads * retCost;
 
   document.getElementById('simp-res-conf').textContent = confLeads.toFixed(2);
   document.getElementById('simp-res-del').textContent = delLeads.toFixed(2);
